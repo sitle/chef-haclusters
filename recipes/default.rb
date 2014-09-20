@@ -128,9 +128,9 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
     else pool_members = node['haproxy']['pool_members']
     end
 
-     if pool_members
-       servers= pool_members.uniq.map do |s|
-        server  = "#{s['hostname']} #{s['ipaddress']}"
+    if pool_members
+      servers = pool_members.uniq.map do |s|
+        server = "#{s['hostname']} #{s['ipaddress']}"
 
         if ! s['member_port']
              server += ":#{node['haproxy']['member_port']}"
@@ -138,7 +138,7 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
         end
 
         if ! s['member_options']
-             server += " weight 1 maxconn #{node['haproxy']['member_max_connections']} check"
+              server += " weight 1 maxconn #{node['haproxy']['member_max_connections']} check"
         else server += " #{s['member_options']}"
         end
 
