@@ -32,7 +32,6 @@ eg:
 {
   "id": "ldap_toriki_dmz_srv_gov_pf",
   "haproxy": {
-    "enable_default_http": "false",
     "httpchk": "HEAD",
     "services": {
       "ldap_cluster": {
