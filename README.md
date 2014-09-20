@@ -1,8 +1,24 @@
 # chef-haclusters-cookbook
 
-TODO: Enter the cookbook description here.
+ This chef cookbook allows to configure several clusters from their definitions contained in a data bag of name "clusters"...
 
 ## Supported Platforms
+
+ ubuntu/debian
+
+## Attributes
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  No default attribute
+</table>
+
+## Usage
 
  depend on the 'haproxy' chef-cookbook.
 
@@ -97,23 +113,6 @@ eg:
   }
 }
 </pre>
-
-
-## Attributes
-
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  No default attribute
-</table>
-
-## Usage
-
- Data bag example:
 
 ### chef-haclusters::default
 
