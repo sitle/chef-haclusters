@@ -21,22 +21,22 @@
 include_recipe 'haproxy::default'
 
 begin
-#  raise 'This node name is not defined for such a role (procedure aborted)...' if roleExist == true
-  raise 'This node name is not defined for such a role (procedure aborted)...' if ! data_bag_item('clusters', node['fqdn'].gsub(".", "_"))
-rescue Exception => e
-  puts "********************************************************************\n"
-  puts e.message
-  puts "********************************************************************\n\n"
-  return 1
+  raise unless haDefinition= data_bag_item('clusters', node['fqdn'].gsub(".", "_"))
+  rescue Exception
+    puts '********************************************************************'
+    puts 'This node name is not defined for such a role (procedure aborted)...'
+    puts '********************************************************************'
+    return
+  ensure
+  #
 end
-haDefinition = data_bag_item('clusters', node['fqdn'].gsub(".", "_"))
 
 def sumEnv(env, add)
   add.each do |name, val|
     if val.is_a? Hash
       env[name] = sumEnv(env[name], val)
     else
-      if name == 'pool_members'
+      if val.is_a? Array
         env[name] = env[name] ? env[name] + val : val
       else
         env[name] = val if ! env[name]
