@@ -60,7 +60,6 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
 
 # Admin definition:
   admin = haDefinition['enable_admin'] ? haDefinition['admin'] : node['haproxy']['admin']
-
   if admin
     haproxy_lb "admin" do
       bind "#{admin['address_bind']}:#{admin['port']}"
@@ -176,11 +175,6 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
 
         server
       end
-
-     if serviceDefinition['mode']
-          mode = serviceDefinition['mode']
-     else mode =  node['haproxy']['mode']
-     end
 
      haproxy_lb "servers-#{mode}" do
        type 'backend'
