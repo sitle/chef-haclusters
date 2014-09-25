@@ -19,35 +19,33 @@
 #
 # PE-20140916
 include_recipe 'haproxy::default'
+include_recipe 'chef-nodeAttributes::default'
 
-begin
-  raise unless haDefinition= data_bag_item('clusters', node['fqdn'].gsub(".", "_"))
-  rescue Exception
-    puts '********************************************************************'
-    puts 'This node name is not defined for such a role (procedure aborted)...'
-    puts '********************************************************************'
-    return
-  ensure
-  #
-end
-
-def sumEnv(env, add)
-  add.each do |name, val|
+def getEnv( context, val, merge )
+  val.each do |name, val|
     if val.is_a? Hash
-      env[name] = sumEnv(env[name], val)
+      if !merge || !(context.is_a? Hash)
+        context[name] = val
+      else
+        context[name] = getEnv( context[name], val, merge )
+      end
     else
       if val.is_a? Array
-        env[name] = env[name] ? env[name] + val : val
+        if !context[name] || !merge || !(context[name].is_a? Array)
+          context[name] = val
+        else
+          context[name] = context[name] + val
+        end
       else
-        env[name] = val if ! env[name]
+        context[name] = val if !context[name] || context[name]=={} || !merge
       end
     end
   end
-  env
+  context
 end
 
-if haDefinition != {} && haDefinition["haproxy"] != {}
-  haDefinition = haDefinition["haproxy"]
+if node.default["haproxy"] != {}
+  haDefinition = node.default["haproxy"]
 
   include_recipe "haproxy::install_#{node['haproxy']['install_method']}"
   cookbook_file "/etc/default/haproxy" do
@@ -79,7 +77,7 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
           i = i['services'] if i
           i = i[serviceName] if i
           if i && i['app_server_role'] == serviceDefinition['app_server_role']
-            serviceDefinition = sumEnv( serviceDefinition, i )
+            serviceDefinition = getEnv( serviceDefinition, i, true )
           end
         end
       end
@@ -184,7 +182,7 @@ if haDefinition != {} && haDefinition["haproxy"] != {}
      end
    end
 
-  end if haDefinition != {}
+  end if haDefinition['services']
 
   haproxy_config "Create haproxy.cfg" do
     notifies :restart, "service[haproxy]", :delayed

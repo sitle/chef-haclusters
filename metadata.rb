@@ -6,4 +6,5 @@ description      'Installs/Configures chef-haclusters'
 long_description 'Installs/Configures chef-haclusters'
 version          '0.1.0'
 depends          'haproxy'
+depends          'chef-nodeAttributes'
 
