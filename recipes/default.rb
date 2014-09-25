@@ -18,31 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # PE-20140916
+
 include_recipe 'haproxy::default'
 include_recipe 'chef-nodeAttributes::default'
-
-def getEnv( context, val, merge )
-  val.each do |name, val|
-    if val.is_a? Hash
-      if !merge || !(context.is_a? Hash)
-        context[name] = val
-      else
-        context[name] = getEnv( context[name], val, merge )
-      end
-    else
-      if val.is_a? Array
-        if !context[name] || !merge || !(context[name].is_a? Array)
-          context[name]  = val
-        else
-          context[name] += val
-        end
-      else
-        context[name] = val if !context[name] || context[name]=={} || !merge
-      end
-    end
-  end
-  context
-end
 
 if node.default["haproxy"] != {}
   haDefinition = node.default["haproxy"]
@@ -77,7 +55,7 @@ if node.default["haproxy"] != {}
           i = i['services'] if i
           i = i[serviceName] if i
           if i && i['app_server_role'] == serviceDefinition['app_server_role']
-            serviceDefinition = getEnv( serviceDefinition, i, true )
+            serviceDefinition = $getEnv.call( serviceDefinition, i, true )
           end
         end
       end
