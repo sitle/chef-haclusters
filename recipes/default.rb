@@ -32,9 +32,9 @@ def getEnv( context, val, merge )
     else
       if val.is_a? Array
         if !context[name] || !merge || !(context[name].is_a? Array)
-          context[name] = val
+          context[name]  = val
         else
-          context[name] = context[name] + val
+          context[name] += val
         end
       else
         context[name] = val if !context[name] || context[name]=={} || !merge
@@ -174,6 +174,7 @@ if node.default["haproxy"] != {}
         server
       end
 
+     # SSL Backend definition:
      haproxy_lb "servers-#{mode}" do
        type 'backend'
        mode "#{mode}"
