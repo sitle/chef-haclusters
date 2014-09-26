@@ -15,7 +15,6 @@
     <th>Description</th>
     <th>Default</th>
   </tr>
-  No default attribute
 </table>
 
 ## Usage
