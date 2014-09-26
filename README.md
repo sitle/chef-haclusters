@@ -17,6 +17,8 @@
   </tr>
 </table>
 
+ See https://github.com/hw-cookbooks/haproxy and data_bag example bellow...
+
 ## Usage
 
  depend on the 'haproxy' chef-cookbook.
