@@ -1,6 +1,6 @@
 # chef-haclusters-cookbook
 
- This chef cookbook allows to configure several clusters from their definitions contained in a data bag of name "clusters"...
+ This chef cookbook allows to configure haproxy clusters...
 
 ## Supported Platforms
 
@@ -22,7 +22,7 @@
 
  depend on the 'haproxy' chef-cookbook.
 
- Configurations aggregators are defined in a data bag "clusters". Each aggregator is described in an item whose id(1) is its fqdn.
+ Configurations aggregators can be defined in a data bag "clusters" (see: https://github.com/peychart/chef-nodeAttributes) where each aggregator is described in an item whose id(1) is its fqdn.
 
  (1): Dots are not allowed (only alphanumeric), substitute by underscores
 
@@ -120,7 +120,11 @@ Include `chef-haclusters` in your node's `run_list`:
 
 ```json
 {
+ "override_attributes": {
+    "databag_name": "clusters"
+  },
   "run_list": [
+    "recipe[chef-nodeAttributes::default]",
     "recipe[chef-haclusters::default]"
   ]
 }
