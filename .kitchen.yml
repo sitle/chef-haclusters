@@ -1,0 +1,27 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: false
+
+platforms:
+  - name: debian-7
+    driver:
+      box: debian-7-chef
+      box_url: http://bit.ly/1tpmh7c
+  - name: ubuntu-12.04
+    driver:
+      box: ubuntu-12.04-chef
+      box_url: http://bit.ly/1qaxsDi
+  - name: ubuntu-14.04
+    driver:
+      box: ubuntu-14.04-chef
+      box_url: http://bit.ly/1pK1sQ8
+
+suites:
+  - name: default
+    run_list:
+      - recipe[chef-haclusters::default]
+    attributes:
